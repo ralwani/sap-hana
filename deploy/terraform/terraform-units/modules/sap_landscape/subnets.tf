@@ -1,7 +1,7 @@
 // Creates admin subnet of SAP VNET
 resource "azurerm_subnet" "admin" {
   provider             = azurerm.main
-  count                = local.sub_admin_defined && !local.sub_admin_existing ? 1 : 0
+  count                = local.sub_admin_defined && !local.sub_admin_exists ? 1 : 0
   name                 = local.sub_admin_name
   resource_group_name  = local.vnet_sap_exists ? data.azurerm_virtual_network.vnet_sap[0].resource_group_name : azurerm_virtual_network.vnet_sap[0].resource_group_name
   virtual_network_name = local.vnet_sap_exists ? data.azurerm_virtual_network.vnet_sap[0].name : azurerm_virtual_network.vnet_sap[0].name
@@ -10,15 +10,15 @@ resource "azurerm_subnet" "admin" {
 
 resource "azurerm_subnet_route_table_association" "admin" {
   provider       = azurerm.main
-  count          = local.sub_admin_defined && !local.sub_admin_existing && !local.vnet_sap_exists ? 1 : 0
-  subnet_id      = local.sub_admin_existing ? local.sub_admin_id : azurerm_subnet.admin[0].id
+  count          = local.sub_admin_defined && !local.sub_admin_exists && !local.vnet_sap_exists ? 1 : 0
+  subnet_id      = local.sub_admin_exists ? local.sub_admin_id : azurerm_subnet.admin[0].id
   route_table_id = azurerm_route_table.rt[0].id
 }
 
 // Creates db subnet of SAP VNET
 resource "azurerm_subnet" "db" {
   provider             = azurerm.main
-  count                = local.sub_db_defined && !local.sub_db_existing ? 1 : 0
+  count                = local.sub_db_defined && !local.sub_db_exists ? 1 : 0
   name                 = local.sub_db_name
   resource_group_name  = local.vnet_sap_exists ? data.azurerm_virtual_network.vnet_sap[0].resource_group_name : azurerm_virtual_network.vnet_sap[0].resource_group_name
   virtual_network_name = local.vnet_sap_exists ? data.azurerm_virtual_network.vnet_sap[0].name : azurerm_virtual_network.vnet_sap[0].name
@@ -27,15 +27,15 @@ resource "azurerm_subnet" "db" {
 
 resource "azurerm_subnet_route_table_association" "db" {
   provider       = azurerm.main
-  count          = local.sub_db_defined && !local.sub_db_existing && !local.vnet_sap_exists ? 1 : 0
-  subnet_id      = local.sub_db_existing ? local.sub_db_id : azurerm_subnet.db[0].id
+  count          = local.sub_db_defined && !local.sub_db_exists && !local.vnet_sap_exists ? 1 : 0
+  subnet_id      = local.sub_db_exists ? local.sub_db_id : azurerm_subnet.db[0].id
   route_table_id = azurerm_route_table.rt[0].id
 }
 
 // Creates app subnet of SAP VNET
 resource "azurerm_subnet" "app" {
   provider             = azurerm.main
-  count                = local.sub_app_defined && !local.sub_app_existing ? 1 : 0
+  count                = local.sub_app_defined && !local.sub_app_exists ? 1 : 0
   name                 = local.sub_app_name
   resource_group_name  = local.vnet_sap_exists ? data.azurerm_virtual_network.vnet_sap[0].resource_group_name : azurerm_virtual_network.vnet_sap[0].resource_group_name
   virtual_network_name = local.vnet_sap_exists ? data.azurerm_virtual_network.vnet_sap[0].name : azurerm_virtual_network.vnet_sap[0].name
@@ -44,8 +44,8 @@ resource "azurerm_subnet" "app" {
 
 resource "azurerm_subnet_route_table_association" "app" {
   provider       = azurerm.main
-  count          = local.sub_app_defined && !local.sub_app_existing && !local.vnet_sap_exists ? 1 : 0
-  subnet_id      = local.sub_app_existing ? local.sub_app_id : azurerm_subnet.app[0].id
+  count          = local.sub_app_defined && !local.sub_app_exists && !local.vnet_sap_exists ? 1 : 0
+  subnet_id      = local.sub_app_exists ? local.sub_app_id : azurerm_subnet.app[0].id
   route_table_id = azurerm_route_table.rt[0].id
 }
 
@@ -78,10 +78,10 @@ resource "azurerm_network_security_group" "admin" {
 
 # Associates admin nsg to admin subnet
 resource "azurerm_subnet_network_security_group_association" "admin" {
-  provider                  = azurerm.main
-  count                     = local.sub_admin_defined && !local.sub_admin_nsg_exists ? 1 : 0
-   
-  subnet_id                 = local.sub_admin_existing ? local.sub_admin_id : azurerm_subnet.admin[0].id
+  provider = azurerm.main
+  count    = local.sub_admin_defined && !local.sub_admin_nsg_exists ? 1 : 0
+
+  subnet_id                 = local.sub_admin_exists ? local.sub_admin_id : azurerm_subnet.admin[0].id
   network_security_group_id = azurerm_network_security_group.admin[0].id
 }
 
@@ -99,7 +99,7 @@ resource "azurerm_network_security_group" "db" {
 resource "azurerm_subnet_network_security_group_association" "db" {
   provider                  = azurerm.main
   count                     = local.sub_db_defined && !local.sub_db_nsg_exists ? 1 : 0
-  subnet_id                 = local.sub_db_existing ? local.sub_db_id : azurerm_subnet.db[0].id
+  subnet_id                 = local.sub_db_exists ? local.sub_db_id : azurerm_subnet.db[0].id
   network_security_group_id = azurerm_network_security_group.db[0].id
 }
 
@@ -117,7 +117,7 @@ resource "azurerm_network_security_group" "app" {
 resource "azurerm_subnet_network_security_group_association" "app" {
   provider                  = azurerm.main
   count                     = local.sub_app_defined && !local.sub_app_nsg_exists ? 1 : 0
-  subnet_id                 = local.sub_app_existing ? local.sub_app_id : azurerm_subnet.app[0].id
+  subnet_id                 = local.sub_app_exists ? local.sub_app_id : azurerm_subnet.app[0].id
   network_security_group_id = azurerm_network_security_group.app[0].id
 }
 
@@ -155,7 +155,7 @@ resource "random_integer" "app_priority" {
 }
 resource "azurerm_firewall_network_rule_collection" "firewall-azure-app" {
   provider            = azurerm.deployer
-  count               = local.firewall_exists && local.sub_app_defined && !local.sub_app_existing ? 1 : 0
+  count               = local.firewall_exists && local.sub_app_defined && !local.sub_app_exists ? 1 : 0
   name                = format("%s%s%s", local.prefix, var.naming.separator, local.resource_suffixes.firewall_rule_app)
   azure_firewall_name = local.firewall_name
   resource_group_name = local.firewall_rgname
