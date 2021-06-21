@@ -36,6 +36,15 @@ data "azurerm_virtual_network" "vnet_sap" {
   resource_group_name = split("/", local.vnet_sap_arm_id)[4]
 }
 
+resource "azurerm_private_dns_zone_virtual_network_link" "vnet_sap" {
+  count                 = length(local.dns_label) > 0 && var.use_deployer ? 1 : 0
+  name                  = format("%s%s%s", local.prefix, var.naming.separator, local.resource_suffixes.dns_link)
+  resource_group_name   = local.rg_name
+  private_dns_zone_name = local.dns_label
+  virtual_network_id    = local.vnet_mgmt_id
+}
+
+
 // Peers management VNET to SAP VNET
 resource "azurerm_virtual_network_peering" "peering_management_sap" {
   provider                     = azurerm.deployer
