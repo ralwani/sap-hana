@@ -100,3 +100,8 @@ variable "terraform_template_version" {
   description = "The version of Terraform templates that were identified in the state file"
   default = ""
 }
+
+variable "dns_label" {
+  description = "DNS label"
+  default = ""
+}

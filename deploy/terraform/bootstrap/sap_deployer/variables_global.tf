@@ -82,3 +82,8 @@ variable "assign_subscription_permissions" {
   description = "Assign permissions on the subscription"
   default = true
 }
+
+variable "dns_label" {
+  description = "DNS label"
+  default = ""
+}

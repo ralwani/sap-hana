@@ -93,3 +93,6 @@ output "automation_version" {
   value = local.version_label
 }
 
+output "dns_label" {
+  value = var.dns_label
+}

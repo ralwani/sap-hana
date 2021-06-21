@@ -101,6 +101,13 @@ data "azurerm_virtual_network" "vnet_mgmt" {
   resource_group_name = split("/", local.vnet_mgmt_arm_id)[4]
 }
 
+resource "azurerm_private_dns_zone" "vnet_mgmt" {
+  count               = length(var.dns_label) > 0 ? 1 : 0
+  name                = var.dns_label
+  resource_group_name = local.rg_name
+}
+
+
 // Create/Import management subnet
 resource "azurerm_subnet" "subnet_mgmt" {
   count                = (local.enable_deployers && !local.sub_mgmt_exists) ? 1 : 0

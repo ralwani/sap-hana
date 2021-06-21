@@ -14,6 +14,7 @@ module "sap_deployer" {
   naming                          = module.sap_namegenerator.naming
   firewall_deployment             = var.firewall_deployment
   assign_subscription_permissions = var.assign_subscription_permissions
+  dns_label                       = var.dns_label
 }
 
 module "sap_namegenerator" {
