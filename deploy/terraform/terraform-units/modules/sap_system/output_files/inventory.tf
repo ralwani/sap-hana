@@ -137,15 +137,15 @@ resource "local_file" "ansible_inventory_new_yml" {
     webservers        = length(local.ips_web) > 0 ? var.naming.virtualmachine_names.WEB_VMNAME : [],
     prefix            = var.naming.prefix.SDU,
     separator         = var.naming.separator,
-    platform          = length(local.hdb_vms) > 0 ? "hana" : lower(local.anydb_vms[0].platform)
-    dbconnection      = length(local.hdb_vms) > 0 ? "ssh" : upper(local.anydb_vms[0].platform) == "SQLSERVER" ? "winrm" : "ssh"
+    platform          = length(local.hdb_vms) > 0 ? "hana" : lower(try(local.anydb_vms[0].platform,""))
+    dbconnection      = length(local.hdb_vms) > 0 ? "ssh" : upper(try(local.anydb_vms[0].platform,"")) == "SQLSERVER" ? "winrm" : "ssh"
     scsconnection     = upper(var.app_tier_os_types["scs"]) == "LINUX" ? "ssh" : "winrm"
     appconnection     = upper(var.app_tier_os_types["app"]) == "LINUX" ? "ssh" : "winrm"
     webconnection     = upper(var.app_tier_os_types["web"]) == "LINUX" ? "ssh" : "winrm"
-    appconnectiontype = var.application.auth_type
-    webconnectiontype = var.application.auth_type
-    scsconnectiontype = var.application.auth_type
-    dbconnectiontype  = length(local.hdb_vms) > 0 ? local.hdb_vms[0].auth_type : local.anydb_vms[0].auth_type
+    appconnectiontype = var.authentication_type
+    webconnectiontype = var.authentication_type
+    scsconnectiontype = var.authentication_type
+    dbconnectiontype  = length(local.hdb_vms) > 0 ? try(local.hdb_vms[0].auth_type, "key") : try(local.anydb_vms[0].auth_type, "key")
     }
   )
   filename             = format("%s/ansible_config_files/%s_hosts.yaml",path.cwd,var.hdb_sid)
