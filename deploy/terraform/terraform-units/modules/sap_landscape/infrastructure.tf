@@ -42,6 +42,8 @@ resource "azurerm_private_dns_zone_virtual_network_link" "vnet_sap" {
   resource_group_name   = local.rg_name
   private_dns_zone_name = local.dns_label
   virtual_network_id    = local.vnet_mgmt_id
+  registration_enabled  = true
+
 }
 
 
