@@ -75,9 +75,9 @@ locals {
   application_temp = {
     sid = try(coalesce(var.sid, try(var.application.sid, "")), "")
 
-    enable_deployment = var.enable_app_tier_deployment && var.application.enable_deployment
-    use_DHCP          = var.app_tier_use_DHCP || var.application.use_DHCP
-    dual_nics         = var.app_tier_dual_nics || var.application.dual_nics
+    enable_deployment = var.enable_app_tier_deployment && try(var.application.enable_deployment, true)
+    use_DHCP          = var.app_tier_use_DHCP || try(var.application.use_DHCP, false)
+    dual_nics         = var.app_tier_dual_nics || try(var.application.dual_nics, false)
     vm_sizing         = try(coalesce(var.app_tier_vm_sizing, try(var.application.vm_sizing, "")), "")
     authentication = {
       type     = try(coalesce(var.app_tier_authentication_type, try(var.application.authentication.type, "key")), "key")
