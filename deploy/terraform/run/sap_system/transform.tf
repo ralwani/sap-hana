@@ -38,7 +38,7 @@ locals {
   }
   options_temp = {
     enable_secure_transfer = true
-    resource_offset        = max(var.resource_offset, var.options.resource_offset)
+    resource_offset        = max(var.resource_offset, try(var.options.resource_offset,0))
     nsg_asg_with_vnet      = var.nsg_asg_with_vnet || try(var.options.nsg_asg_with_vnet, false)
     legacy_nic_order       = var.legacy_nic_order || try(var.options.legacy_nic_order, false)
   }
