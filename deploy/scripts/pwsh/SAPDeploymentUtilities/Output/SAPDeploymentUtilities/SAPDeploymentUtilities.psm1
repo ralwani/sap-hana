@@ -2077,9 +2077,8 @@ Licensed under the MIT license.
             $Env:TF_DATA_DIR = $null
             throw "Error executing command: $Cmd"
         }
-    
     }
-
+    
     $Env:TF_DATA_DIR = $null
 }
 
