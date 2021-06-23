@@ -93,7 +93,7 @@ variable "vm_disk_type" {
 }
 
 variable "use_DHCP" {
-  default = null
+  default = false
 }
 
 /*
@@ -173,22 +173,22 @@ This block describes the variables for the options section block in the json fil
 */
 
 variable "enable_deployer_public_ip" {
-  default = null
+  default = true
 }
 
 variable "firewall_deployment" {
   description = "Boolean flag indicating if an Azure Firewall should be deployed"
-  default = null
+  default = false
 }
 
 variable "firewall_rule_subnets" {
   description = "List of subnets that are part of the firewall rule"
-  default = null
+  default = []
 }
 
 variable "firewall_allowed_ipaddresses" {
   description = "List of allowed IP addresses to be part of the firewall rule"
-  default = null
+  default = []
 }
 
 
