@@ -83,7 +83,3 @@ variable "assign_subscription_permissions" {
   default = true
 }
 
-variable "dns_label" {
-  description = "DNS label"
-  default = ""
-}
