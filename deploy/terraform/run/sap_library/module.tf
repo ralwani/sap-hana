@@ -11,17 +11,19 @@ module "sap_library" {
   deployer                = var.deployer
   key_vault               = var.key_vault
   service_principal       = local.service_principal
-  deployer_tfstate        = try(data.terraform_remote_state.deployer[0].outputs,[])
+  deployer_tfstate        = try(data.terraform_remote_state.deployer[0].outputs, [])
   naming                  = module.sap_namegenerator.naming
+  dns_label               = var.dns_label
+
 }
 
-module sap_namegenerator {
+module "sap_namegenerator" {
   source               = "../../terraform-units/modules/sap_namegenerator"
   environment          = var.infrastructure.environment
   deployer_environment = try(var.deployer.environment, var.infrastructure.environment)
   management_vnet_name = var.deployer.vnet
   location             = var.infrastructure.region
-  codename             = try(var.infrastructure.codename,"")
+  codename             = try(var.infrastructure.codename, "")
   deployer_location    = try(var.deployer.region, var.infrastructure.region)
   random_id            = module.sap_library.random_id
 }
