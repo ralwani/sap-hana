@@ -21,7 +21,6 @@ variable "use_deployer" {
 
 locals {
   // Resources naming
-  vnet_prefix                 = var.naming.prefix.VNET
   storageaccount_name         = var.naming.storageaccount_names.VNET.landscape_storageaccount_name
   witness_storageaccount_name = var.naming.storageaccount_names.VNET.witness_storageaccount_name
   landscape_keyvault_names    = var.naming.keyvault_names.VNET
