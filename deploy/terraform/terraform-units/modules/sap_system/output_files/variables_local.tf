@@ -212,4 +212,7 @@ locals {
         }
       }
   })
+
+  dns_label=try(local.landscape_tfstate.dns_label, "")
+  
 }
