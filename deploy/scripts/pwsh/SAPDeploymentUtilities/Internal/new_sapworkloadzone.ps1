@@ -508,4 +508,3 @@ Licensed under the MIT license.
     }
     $Env:TF_DATA_DIR = $null
 }
-

@@ -1940,6 +1940,7 @@ Licensed under the MIT license.
             $iniContent[$combined]["tfstate_resource_id"] = $tfstate_resource_id
             Out-IniFile -InputObject $iniContent -Path $fileINIPath
         }
+
     }
 
     Write-Host -ForegroundColor green "Initializing Terraform  New-SAPWorkloadZone"
@@ -2083,7 +2084,6 @@ Licensed under the MIT license.
     }
     $Env:TF_DATA_DIR = $null
 }
-
 function Read-KVNode {
     param(
         [Parameter(Mandatory = $true)][String]$source,
