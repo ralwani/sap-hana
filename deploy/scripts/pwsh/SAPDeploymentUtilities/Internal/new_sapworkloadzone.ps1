@@ -369,6 +369,11 @@ Licensed under the MIT license.
 
     Write-Host -ForegroundColor green "Initializing Terraform  New-SAPWorkloadZone"
 
+    $terraform_module_directory = Join-Path -Path $repo -ChildPath "\deploy\terraform\run\$Type"
+    $Env:TF_DATA_DIR = (Join-Path -Path $fInfo.Directory.FullName -ChildPath ".terraform")
+
+    Write-Host -ForegroundColor green "Initializing Terraform"
+
     $Command = " init -upgrade=true -backend-config ""subscription_id=$state_subscription_id"" -backend-config ""resource_group_name=$rgName"" -backend-config ""storage_account_name=$saName"" -backend-config ""container_name=tfstate"" -backend-config ""key=$envkey"" "
     if (Test-Path ".terraform" -PathType Container) {
         if (Test-Path ".\.terraform\terraform.tfstate" -PathType Leaf) {
@@ -377,6 +382,12 @@ Licensed under the MIT license.
 
             if ("azurerm" -eq $jsonData.backend.type) {
                 $Command = " init -upgrade=true"
+
+                $ans = Read-Host -Prompt ".terraform already exists, do you want to continue Y/N?"
+                if ("Y" -ne $ans) {
+                    $Env:TF_DATA_DIR = $null
+                    return
+                }
             }
         }
     } 
@@ -401,14 +412,6 @@ Licensed under the MIT license.
             $deployer_tfstate_key_parameter = " -var deployer_tfstate_key=" + $deployer_tfstate_key    
         }
     }
-
-    Write-Host -ForegroundColor green "Running refresh, please wait"
-    $Command = " refresh -var-file " + $fInfo.Fullname + $tfstate_parameter + $landscape_tfstate_key_parameter + $deployer_tfstate_key_parameter
-
-    $Cmd = "terraform -chdir=$terraform_module_directory $Command"
-    Add-Content -Path "deployment.log" -Value $Cmd
-    Write-Verbose $Cmd
-
     
     $Command = " output automation_version"
 
