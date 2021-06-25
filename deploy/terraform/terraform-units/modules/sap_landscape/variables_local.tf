@@ -19,6 +19,17 @@ variable "use_deployer" {
   description = "Use the deployer"
 }
 
+variable "dns_label" {
+  description = "DNS label"
+  default = ""
+}
+
+
+variable "dns_resource_group_name" {
+  description = "DNS resource group name"
+  default = ""
+}
+
 locals {
   // Resources naming
   vnet_prefix                 = var.naming.prefix.VNET
@@ -49,10 +60,7 @@ locals {
 
   firewall_service_tags = format("AzureCloud.%s", local.region)
 
-  //DNS
-  dns_label= try(var.deployer_tfstate.dns_label, "")
-
-  // Resource group
+    // Resource group
   var_rg    = try(local.var_infra.resource_group, {})
   rg_arm_id = try(local.var_rg.arm_id, "")
   rg_exists = length(local.rg_arm_id) > 0 ? true : false
