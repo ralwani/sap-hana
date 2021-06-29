@@ -117,6 +117,8 @@ resource "azurerm_windows_virtual_machine" "anchor" {
     storage_account_uri = data.azurerm_storage_account.storage_bootdiag.primary_blob_endpoint
   }
 
+  patch_mode = Manual
+
   additional_capabilities {
     ultra_ssd_enabled = local.enable_anchor_ultra[count.index]
   }

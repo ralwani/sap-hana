@@ -205,6 +205,8 @@ resource "azurerm_windows_virtual_machine" "dbserver" {
     storage_account_uri = var.storage_bootdiag_endpoint
   }
 
+  patch_mode = Manual
+
   tags = local.tags
 }
 

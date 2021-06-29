@@ -217,6 +217,8 @@ resource "azurerm_windows_virtual_machine" "app" {
     storage_account_uri = var.storage_bootdiag_endpoint
   }
 
+  patch_mode = Manual
+
   tags = local.app_tags
 
 }

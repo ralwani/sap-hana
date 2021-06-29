@@ -211,6 +211,8 @@ resource "azurerm_windows_virtual_machine" "web" {
     storage_account_uri = var.storage_bootdiag_endpoint
   }
 
+  patch_mode = Manual
+
   tags = local.web_tags
 }
 
