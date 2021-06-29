@@ -146,6 +146,9 @@ resource "azurerm_linux_virtual_machine" "scs" {
     storage_account_uri = var.storage_bootdiag_endpoint
   }
 
+  license_type = length(var.license_type) > 0 ? var.license_type : null
+
+
   tags = local.scs_tags
 }
 
@@ -223,8 +226,8 @@ resource "azurerm_windows_virtual_machine" "scs" {
     storage_account_uri = var.storage_bootdiag_endpoint
   }
 
-  patch_mode = Manual
-
+  patch_mode   = "Manual"
+  license_type = length(var.license_type) > 0 ? var.license_type : null
 
   tags = local.scs_tags
 }

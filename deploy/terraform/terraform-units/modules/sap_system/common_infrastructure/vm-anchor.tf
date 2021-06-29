@@ -70,6 +70,9 @@ resource "azurerm_linux_virtual_machine" "anchor" {
     storage_account_uri = data.azurerm_storage_account.storage_bootdiag.primary_blob_endpoint
   }
 
+  license_type = length(var.license_type) > 0 ? var.license_type : null
+
+
   additional_capabilities {
     ultra_ssd_enabled = local.enable_anchor_ultra[count.index]
   }
@@ -117,7 +120,9 @@ resource "azurerm_windows_virtual_machine" "anchor" {
     storage_account_uri = data.azurerm_storage_account.storage_bootdiag.primary_blob_endpoint
   }
 
-  patch_mode = Manual
+  patch_mode = "Manual"
+
+  license_type = length(var.license_type) > 0 ? var.license_type : null
 
   additional_capabilities {
     ultra_ssd_enabled = local.enable_anchor_ultra[count.index]
