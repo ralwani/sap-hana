@@ -55,7 +55,7 @@
                                 SAPINST_SKIP_DIALOGS=true                                                     \
                                 SAPINST_START_GUISERVER=false
                       touch /etc/sap_deployment_automation/sap_deployment_dbload.txt
-   args:
+  args:
     chdir:            /usr/sap/install/SWPM
     creates:          /etc/sap_deployment_automation/sap_deployment_dbload.txt
    # Skip when TRUE (test mode)
